@@ -139,16 +139,21 @@ public final class JstlFunction {
         if (a == null|| a.length == 0) {
             return "";
         }
-        boolean skipDelim = false;
-        if (delim == null || delim.length() == 0) {
-            skipDelim = true;
+        
+        int len = a.length;
+        if (len == 1) {
+            return a[0];
         }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0, len = a.length, delimCount = (len - 1); i < len; i++) {
-            sb.append(a[i]);
-            if (!skipDelim && (i < delimCount)) {
-                sb.append(delim);
+        
+        StringBuilder sb = new StringBuilder(a[0]);
+        if (delim == null || delim.length() == 0) {
+            for (int i = 1; i < len; i++) {
+                sb.append(a[i]);
             }
+        }
+        
+        for (int i = 1; i < len; i++) {
+            sb.append(delim).append(a[i]);
         }
         return sb.toString();
     }
