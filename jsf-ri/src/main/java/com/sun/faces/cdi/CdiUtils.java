@@ -117,8 +117,15 @@ public final class CdiUtils {
      * @return the converter, or null if we could not match one.
      */
     public static Converter<?> createConverter(BeanManager beanManager, Class<?> forClass) {
-        Converter<?> managedConverter = createConverter(beanManager, new FacesConverterAnnotationLiteral("", forClass));
-        
+        Converter<?> managedConverter = null;
+
+        for (
+        	Class<?> forClassOrSuperclass = forClass; 
+        	managedConverter == null && forClassOrSuperclass != null; 
+        	forClassOrSuperclass = forClassOrSuperclass.getSuperclass()
+        ) {
+        	managedConverter = createConverter(beanManager, new FacesConverterAnnotationLiteral("", forClassOrSuperclass));
+        }
         if (managedConverter != null) {
             return new CdiConverter("", forClass, managedConverter);
         }
