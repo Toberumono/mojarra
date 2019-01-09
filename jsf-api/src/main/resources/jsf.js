@@ -1565,16 +1565,17 @@ if (!((jsf && jsf.specversion && jsf.specversion >= 23000 ) &&
                     }
                     parent.replaceChild(newElement, element);
                     runScripts(scripts);
-                } else if (element.nodeName.toLowerCase() === 'input') {
-                    // special case handling for 'input' elements
-                    // in order to not lose focus when updating,
-                    // input elements need to be added in place.
-                    parserElement = document.createElement('div');
-                    parserElement.innerHTML = html;
-                    newElement = parserElement.firstChild;
+                // The following code block does not properly handle all attributes and breaks transitioning from input -> any other element type. (See core:region for an example of what breaks)
+                // } else if (element.nodeName.toLowerCase() === 'input') {
+                //     // special case handling for 'input' elements
+                //     // in order to not lose focus when updating,
+                //     // input elements need to be added in place.
+                //     parserElement = document.createElement('div');
+                //     parserElement.innerHTML = html;
+                //     newElement = parserElement.firstChild;
 
-                    cloneAttributes(element, newElement);
-                    deleteNode(parserElement);
+                //     cloneAttributes(element, newElement);
+                //     deleteNode(parserElement);
                 } else if (html.length > 0) {
                     if (isAutoExec()) {
                         // Create html
